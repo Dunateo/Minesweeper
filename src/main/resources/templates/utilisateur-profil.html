@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="~{layout :: layout(~{::title}, ~{::content})}">
+
+<head>
+    <meta charset="UTF-8">
+    <title th:fragment="title">Profil</title>
+</head>
+<body>
+<div th:fragment="content" class="container">
+
+    <div class="jumbotron">
+        <div class="row">
+            <div class="col-md-4 col-xs-12 col-sm-6 col-lg-4">
+                <img th:src="@{/images/profil.gif}" alt="stack photo" class="profil img">
+            </div>
+            <div class="col-md-8 col-xs-12 col-sm-6 col-lg-8">
+                <div class="container" style="border-bottom:1px solid black">
+                    <h2 th:text="${utilis.pseudo }">John Doe</h2>
+                    <p><a th:href="@{/utilisateur/logout}"><i class="fas fa-sign-out-alt"></i></a>
+                    </p>
+                </div>
+                <hr>
+                <ul class="container details">
+                    <th:block th:each="partie : ${utilis.getPartie()}" th:object="${partie}">
+                        <li >
+
+                            <p>
+                                <span th:if="${partie.temps == 10000000}" th:text="${partie.game.titre + ': Perdu'}">
+                                </span>
+                                <span th:if="${partie.temps != 10000000}" th:text="${partie.game.titre + ': '+ partie.temps +' s'}">
+                                </span>
+                                <a  th:href="@{'/play/loose/' + ${partie.getId()}}" ><i class="fas fa-play"></i>
+                                </a>
+                            </p>
+                        </li>
+                    </th:block>
+                </ul>
+            </div>
+        </div>
+</div>
+</body>
+<div th:insert="~{footer :: copy}"></div>
+</html>

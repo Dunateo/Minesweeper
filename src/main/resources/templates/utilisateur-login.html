@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="~{layout :: layout(~{::title}, ~{::content})}">
+<head>
+    <meta charset="UTF-8">
+    <title th:fragment="title">Nouveau Joueur</title>
+</head>
+<body>
+<div th:fragment="content">
+    <h1>Identifiant ?</h1>
+
+    <form action="#" th:action="@{/utilisateur/login}" th:object="${utilis} "  method="post">
+        <input type="hidden" th:field="*{id}" />
+        <div class="form-group">
+            <label for="name">Pseudo</label>
+            <input type="text" class="form-control" id="name" placeholder="Pseudo" th:field="*{pseudo}" />
+        </div>
+
+        <div class="alert alert-danger" th:if="${#fields.hasErrors('pseudo')}" th:errors="*{pseudo}">Nom Invalide</div>
+        <a class="btn btn-success" th:href="@{/utilisateur/add}">Pas Inscrit ?<i class="fas fa-plus-circle"></i></a>
+        <button type="submit" class="btn btn-primary">Login</button>
+
+    </form>
+
+
+</div>
+</body>
+</html>

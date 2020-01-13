@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="~{layout :: layout(~{::title}, ~{::content})}">
+
+<head>
+    <meta charset="UTF-8">
+    <title th:fragment="title">Partie</title>
+</head>
+<body>
+<div th:fragment="content">
+    <h4  th:text="${Partie.user.pseudo + ' vous jouez en '+ Partie.game.titre + '     '}"></h4>
+    <h4 class="updatable" th:text="${ Partie.temps+ 's'}" ></h4>
+    <input type="hidden" id="id-partie" th:field="${Partie.id}">
+
+
+    <a type="button" class="btn btn-danger" th:href="@{'/play/' + 'abandon/'+${Partie.getId()}}">Abandon</a>
+    <a type="button" class="btn btn-warning" th:href="@{'/play/' + 'flags/'+${Partie.getId()}}">Flags</a>
+    <br>
+    <br>
+    <table class=" customTable bg-light "  >
+        <tbody>
+            <th:block th:each="case : ${Partie.getTable()}" th:object="${case}" >
+
+                <th:block th:switch="*{x}">
+                    <th:block th:case="${0}">
+                        <tr >
+                            <td >
+                                <a th:if="*{etat == true and affichage == 'v'}" class="btn btn-light minesweeper disabled"  th:href="@{'/play/' + ${Partie.getId()}+'/'+ ${case.getId()}}"><i class="fas fa-bomb"></i></a>
+                                <a th:if="*{affichage == 'nv' and flag == true}" class="btn btn-danger minesweeper disabled"  ><i class="far fa-flag"></i></a>
+                                <a th:if="*{affichage == 'nv' and flag == false}" class="btn btn-info minesweeper"  th:href="@{'/play/' + ${Partie.getId()}+'/'+ ${case.getId()}}" ><i class="fas fa-circle-notch"></i></a>
+                                <a th:if="*{affichage == 'v' and etat == false and distanceMine != 0}" class="btn btn-light minesweeper disabled" th:text="*{distanceMine}" >   </a>
+                                <a th:if="*{affichage == 'v' and etat == false and distanceMine == 0}" class="btn btn-light minesweeper disabled"  >   </a>
+                            </td>
+                    </th:block>
+
+                    <th:block th:case="${case.partie.game.largeur}">
+                        </tr>
+                    </th:block>
+
+                    <th:block th:case="*">
+                        <td >
+                            <a th:if="*{etat == true and affichage == 'v'}" class="btn btn-light minesweeper disabled" th:href="@{'/play/' + ${Partie.getId()}+'/'+ ${case.getId()}}"><i class="fas fa-bomb"></i></a>
+                            <a th:if="*{affichage == 'nv' and flag == true}" class="btn btn-danger minesweeper disabled"  ><i class="far fa-flag"></i></a>
+                            <a th:if="*{affichage == 'nv' and flag == false}" class="btn btn-info minesweeper" th:href="@{'/play/' + ${Partie.getId()}+'/'+ ${case.getId()}}" ><i class="fas fa-circle-notch"></i></i></a>
+                            <a th:if="*{affichage == 'v' and etat == false and distanceMine != 0}" class="btn btn-light minesweeper disabled" th:text="*{distanceMine}" >   </a>
+                            <a th:if="*{affichage == 'v' and etat == false and distanceMine == 0}" class="btn btn-light minesweeper disabled"  >    </a>
+                        </td>
+                    </th:block>
+
+                </th:block>
+
+
+            </th:block>
+
+
+
+
+        </tbody>
+
+    </table>
+
+    <script th:src="@{/js/ajaxTime.js}"></script>
+</div>
+</body>
+<div th:insert="~{footer :: copy}"></div>
+</html>

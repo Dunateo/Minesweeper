@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="~{layout :: layout(~{::title}, ~{::content})}">
+
+<head>
+    <meta charset="UTF-8">
+    <title th:fragment="title">Perdu</title>
+</head>
+<body>
+<div th:fragment="content">
+
+    <th:block th:if="${Display == true}">
+        <h4 th:text="${Partie.user.pseudo + ' vous avez perdu en '+ Partie.game.titre + '     '}"></h4>
+        <a type="button" class="btn btn-warning" th:href="@{'/play/new'}"><i class="fas fa-redo"></i></a>
+    </th:block>
+    <th:block th:if="${Display == false}">
+        <h4 th:text="${Partie.user.pseudo + ' a gagné en '+ Partie.game.titre + '     '+ Partie.temps+ 's'}"></h4>
+        <a type="button" class="btn btn-warning" th:href="@{'/'}"><i class="fas fa-arrow-left"></i></a>
+        <!-- Button trigger modal -->
+        <a class="btn  btn-link" data-toggle="modal" data-target="#myModal"><i class="far fa-question-circle"></i></a>
+        <br>
+
+        <div class="progress Barprog " th:with="prog = ${ (Partie.game.partie.get(0).temps*100)/ Partie.temps}, rest = ${ 100 - prog}">
+
+            <div class="progress-bar" role="progressbar" th:style=" ${'width:'+ prog + '%;'}"
+                 th:aria-valuenow="${Partie.game.partie.get(0).temps}"
+                 aria-valuemin="0" th:aria-valuemax="${Partie.temps}"
+                 th:text="${'Record '+Partie.game.partie.get(0).temps}+ ' s'"></div>
+
+            <div class="progress-bar bg-success" role="progressbar"
+                 th:style=" ${'width:'+ rest + '%;'}"
+                 th:aria-valuenow="${Partie.game.partie.get(0).temps}"
+                 aria-valuemin="0"
+                 th:aria-valuemax="${Partie.temps}" th:text="${'Diff'}">
+                Video 6GB
+            </div>
+        </div>
+    </th:block>
+
+
+    <br>
+    <br>
+    <table class=" customTable bg-light"  >
+        <tbody>
+        <th:block th:each="case : ${Partie.getTable()}" th:object="${case}" >
+
+            <th:block th:switch="*{x}">
+                <th:block th:case="${0}">
+                    <tr >
+                        <td >
+                            <a th:if="*{etat == true and affichage == 'v'}" class="btn btn-light minesweeper disabled"  th:href="@{'/play/' + ${Partie.getId()}+'/'+ ${case.getId()}}"><i class="fas fa-bomb"></i></a>
+                            <a th:if="*{affichage == 'nv' and flag == true}" class="btn btn-danger minesweeper disabled"  ><i class="far fa-flag"></i></a>
+                            <a th:if="*{affichage == 'nv' and flag == false}" class="btn btn-info minesweeper disabled"  th:href="@{'/play/' + ${Partie.getId()}+'/'+ ${case.getId()}}" ><i class="fas fa-circle-notch"></i></a>
+                            <a th:if="*{affichage == 'v' and etat == false and distanceMine != 0}" class="btn btn-light minesweeper disabled" th:text="*{distanceMine}" >   </a>
+                            <a th:if="*{affichage == 'v' and etat == false and distanceMine == 0}" class="btn btn-light minesweeper disabled"  >   </a>
+                        </td>
+                </th:block>
+
+                <th:block th:case="${Partie.getGame().getLargeur()}">
+                    </tr>
+                </th:block>
+
+                <th:block th:case="*">
+                    <td >
+                        <a th:if="*{etat == true and affichage == 'v'}" class="btn btn-light minesweeper disabled" th:href="@{'/play/' + ${Partie.getId()}+'/'+ ${case.getId()}}"><i class="fas fa-bomb"></i></a>
+                        <a th:if="*{affichage == 'nv' and flag == true}" class="btn btn-danger minesweeper disabled"  ><i class="far fa-flag"></i></a>
+                        <a th:if="*{affichage == 'nv' and flag == false}" class="btn btn-info minesweeper disabled"  th:href="@{'/play/' + ${Partie.getId()}+'/'+ ${case.getId()}}" ><i class="fas fa-circle-notch"></i></a>
+                        <a th:if="*{affichage == 'v' and etat == false and distanceMine != 0}" class="btn btn-light minesweeper disabled" th:text="*{distanceMine}" >   </a>
+                        <a th:if="*{affichage == 'v' and etat == false and distanceMine == 0}" class="btn btn-light minesweeper disabled"  >    </a>
+                    </td>
+                </th:block>
+
+            </th:block>
+
+
+        </th:block>
+
+
+
+
+        </tbody>
+
+    </table>
+
+
+    <!-- Modal -->
+    <div th:if="${Display == false}" class="modal fade  custom" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myModalLabel" th:text="${Partie.game.titre}">Modal title</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" th:text="${'Le mode de jeu consiste a découvrir toutes les cases sans clicker sur une des mines. Le plateau est de '+
+                Partie.getGame().getLargeur()+ 'x'+ Partie.getGame().getLongueur()+
+                '. Ce mode contient '+ Partie.getGame().getMines()+' mines.'}">
+                    Heyy Bel
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+</body>
+<div th:insert="~{footer :: copy}"></div>
+</html>

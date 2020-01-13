@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"  th:replace="~{layout :: layout(~{::title}, ~{::content})}">
+<head>
+    <meta charset="UTF-8">
+    <title th:fragment="title">Winner</title>
+</head>
+<body>
+<div th:fragment="content">
+    <h1 >Bravo vous avez gagné!</h1>
+
+    <p th:text="${'Vous avez gagné '+partie.getUser().pseudo+ ' en seulement '+ partie.getTemps()+'s'}"><i class="fas fa-crown"></i></p>
+    <a class="btn btn-warning" th:href="@{/play/new}"><i class="fas fa-redo"></i></a>
+    <a class="btn btn-success" th:href="@{/}"><i class="fas fa-home"></i></a>
+    <br>
+    <br>
+    <img th:src="@{/images/win.gif}" class="center-block">
+    </div>
+
+</body>
+<div th:insert="~{footer :: copy}"></div>
+</html>

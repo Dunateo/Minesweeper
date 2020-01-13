@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="~{layout :: layout(~{::title}, ~{::content})}">
+
+<head>
+    <meta charset="UTF-8">
+    <title th:fragment="title">Liste des modes de jeu</title>
+</head>
+<body>
+<div th:fragment="content">
+    <h1>Liste des modes de Jeu</h1>
+
+    <p>
+        <a th:href="@{/gamemode/add}" class="btn btn-warning" role="button"  aria-pressed="true">Nouveau Mode de Jeu</a>
+    </p>
+    <table class="table">
+        <thead class="thead-dark">
+        <tr>
+            <th>#</th>
+            <th>Nom</th>
+            <th>Taille</th>
+            <th>Nb mines</th>
+            <th></th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="gamemode : ${gamemodes}" th:object="${gamemode}">
+            <td th:text="*{id}">1</td>
+            <td th:text="*{titre}">France</td>
+            <td th:text="*{longueur+'x'+ largeur}">1</td>
+            <td th:text="*{mines}">France</td>
+
+            <td>
+                <a th:href="@{|/gamemode/edit/*{id}|}" class="btn btn-primary" role="button">
+                    <i class="far fa-edit"></i>
+                </a>
+            </td>
+            <td>
+                <a th:href="@{|/gamemode/delete/*{id}|}" class="btn btn-danger" role="button">
+                    <i class="fas fa-trash-alt"></i>
+                </a>
+            </td>
+        </tr>
+        </tbody>
+
+    </table>
+
+    <nav aria-label="Page de navigation exemple">
+        <ul class="pagination">
+            <li class="page-item" th:classappend="*{gamemodes.getNumber() == 0 } ? disabled">
+                <a class="page-link" href="#" th:href="@{/gamemode/list(page=${gamemodes.getNumber()-1})}">Précédent</a>
+            </li>
+            <li class="page-item"
+                th:classappend="${gamemodes.getNumber()-1} ? active"
+                th:each="page: ${#numbers.sequence(1,gamemodes.totalPages)}">
+                <a th:text="${page}" class="page-link" href="#" th:href="@{/gamemode/list(page=${page -1})}"></a>
+            </li>
+            <li class="page-item"
+                th:classappend="${gamemodes.getNumber() ==  gamemodes.totalPages -1} ? disabled">
+                <a class="page-link" href="#" th:href="@{/gamemode/list(page=${gamemodes.getNumber() + 1})}">Suivant</a>
+            </li>
+        </ul>
+
+    </nav>
+
+</div>
+</body>
+<div th:insert="~{footer :: copy}"></div>
+</html>

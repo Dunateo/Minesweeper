@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="~{layout :: layout(~{::title}, ~{::content})}">
+<head>
+    <meta charset="UTF-8">
+    <title th:fragment="title">Nouvelle Partie</title>
+</head>
+<body>
+<div th:fragment="content">
+    <h1>Nouvelle Partie</h1>
+
+    <form action="#" th:action="@{/play/new}" th:object="${parties} "  method="post">
+        <input type="hidden" th:field="*{id}" />
+        <div class="form-group">
+            <input type="text" class="form-control" id="name" placeholder="Pseudo" th:field="${utili.pseudo}" readonly/>
+        </div>
+
+        <div class="form-group">
+            <label for="Selectmodejeu">Mode de Jeu</label>
+            <select class="form-control" id="Selectmodejeu" th:field="*{game}">
+                <option th:each="gamemode : ${gamemodes}"  th:value="${gamemode.id}" th:text="${gamemode.titre }">1</option>
+            </select>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Enregistrer</button>
+    </form>
+</div>
+</body>
+</html>
